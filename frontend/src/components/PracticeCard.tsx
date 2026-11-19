@@ -1,15 +1,19 @@
 type PracticeCardProps = {
-  word: string
-  language: string
-  sentence: string
-  onSentenceChange: (sentence: string) => void
-}
+  word: string;
+  language: string;
+  sentence: string;
+  practiceStatus: string | null;
+  onSentenceChange: (sentence: string) => void;
+  onSubmit: () => void;
+};
 
 function PracticeCard({
   word,
   language,
   sentence,
   onSentenceChange,
+  onSubmit,
+  practiceStatus,
 }: PracticeCardProps) {
   return (
     <article className="rounded-card bg-wordwise-dark p-8 text-white">
@@ -35,19 +39,25 @@ function PracticeCard({
       />
 
       <div className="mt-4 flex items-center justify-between">
-        <span className="text-sm text-gray-400">
-          {sentence.length}/500
-        </span>
+        <span className="text-sm text-gray-400">{sentence.length}/500</span>
 
         <button
+          type="button"
+          onClick={onSubmit}
           disabled={sentence.trim().length === 0}
           className="cursor-pointer rounded-full bg-wordwise-gold px-6 py-3 font-bold text-wordwise-text disabled:cursor-not-allowed disabled:opacity-40"
         >
           Check my sentence
         </button>
       </div>
+
+      {practiceStatus && (
+        <div className="mt-6 rounded-xl border border-gray-600 bg-[#242d26] p-4">
+          <p className="text-sm leading-6 text-gray-300">{practiceStatus}</p>
+        </div>
+      )}
     </article>
-  )
+  );
 }
 
-export default PracticeCard
+export default PracticeCard;

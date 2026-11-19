@@ -1,22 +1,32 @@
-import { useState } from 'react'
-import LanguageSelector from './components/LanguageSelector'
-import VocabularyCard from './components/VocabularyCard'
-import PracticeCard from './components/PracticeCard'
+import { useState } from "react";
+import LanguageSelector from "./components/LanguageSelector";
+import VocabularyCard from "./components/VocabularyCard";
+import PracticeCard from "./components/PracticeCard";
 import {
   languages,
   vocabularyByLanguage,
   type Language,
-} from './data/languages'
+} from "./data/languages";
 
 function App() {
   const [sentence, setSentence] = useState("");
-  const [selectedLanguage, setSelectedLanguage] =
-  useState<Language>('French')
-const vocabulary = vocabularyByLanguage[selectedLanguage];
+  const [practiceStatus, setPracticeStatus] = useState<string | null>(null);
+  const [selectedLanguage, setSelectedLanguage] = useState<Language>("French");
+  const vocabulary = vocabularyByLanguage[selectedLanguage];
   function handleLanguageChange(language: Language) {
-  setSelectedLanguage(language)
-  setSentence('')
-}
+    setSelectedLanguage(language);
+    setSentence("");
+    setPracticeStatus(null);
+  }
+  function handlePracticeSubmit() {
+    if (!sentence.trim()) {
+      return;
+    }
+
+    setPracticeStatus(
+      "Sentence received. AI feedback will be connected through the Wordwise backend.",
+    );
+  }
 
   return (
     <main className="min-h-screen bg-wordwise-bg text-wordwise-text">
@@ -49,6 +59,8 @@ const vocabulary = vocabularyByLanguage[selectedLanguage];
           language={vocabulary.language}
           sentence={sentence}
           onSentenceChange={setSentence}
+          onSubmit={handlePracticeSubmit}
+          practiceStatus={practiceStatus}
         />
       </section>
     </main>
